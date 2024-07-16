@@ -13,6 +13,10 @@ int main(){
   list.AddTail(90);
   list.InsertBefore(100, 20);
 
+  list.RemoveHead();
+  list.RemoveTail();
+  list.Remove(60);
+
   list.PrintList();
   print(list.GetSize());  
 
