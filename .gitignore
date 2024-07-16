@@ -1,0 +1,11 @@
+bin
+build
+.vscode
+*BinaryTree*
+*Graph*
+*Hashtable*
+*Heap*
+*Queues*
+*Stack*
+*Trees*
+*Trie*
