@@ -49,8 +49,8 @@ public:
   void RemoveHead();
   void RemoveTail();
   void Remove(T input);
-  void InsertBefore(T data, T input, bool all=false);
-  void InsertAfter(T data, T input, bool all=false);
+  void InsertBefore(T input, T data, bool all=false);
+  void InsertAfter(T input, T data, bool all=false);
   void PrintList();
 
 };
@@ -71,10 +71,22 @@ void LinkedList<T>::AddTail(T data){
   if(head == nullptr){
     head = NewNode;
     tail = NewNode;
-  } else{
-    tail->SetNextPtr(NewNode);
-    tail = NewNode;
+    this->size++;
+    return;
+  } 
+  
+  Node<T> *current = head;
+  Node<T> *previous = nullptr;
+
+  while(current != nullptr){
+    previous = current;
+    current = current->GetNextPtr();
+    if(current == nullptr){
+      tail = NewNode;
+      previous->SetNextPtr(NewNode);
+    }
   }
+
   this->size++;
 }
 
@@ -121,10 +133,7 @@ void LinkedList<T>::Remove(T input){
   if(head->GetData() == input){
     RemoveHead();
     return;
-  } else if(tail->GetData() == input){
-    RemoveTail();
-    return;
-  }
+  } 
 
   Node<T> *current = head;
   Node<T> *previous = nullptr;
@@ -134,9 +143,12 @@ void LinkedList<T>::Remove(T input){
     current = current->GetNextPtr();
     if(current->GetData() == input){
       Node<T> *Tnext = current->GetNextPtr();
-      // current->SetNextPtr(nullptr);
-      // previous->SetNextPtr(Tnext);
-
+      previous->SetNextPtr(Tnext);
+      delete current;
+      current = nullptr;
+    } else if(current->GetNextPtr() == nullptr){
+      std::cerr << "Error: Remove value not found." << std::endl;
+      return;
     }
   }
 
@@ -144,7 +156,7 @@ void LinkedList<T>::Remove(T input){
 }
 
 template<typename T>
-void LinkedList<T>::InsertBefore(T data, T input, bool all){
+void LinkedList<T>::InsertBefore(T input, T data, bool all){
 
   if(this->size == 0){ return; }
 
@@ -165,6 +177,9 @@ void LinkedList<T>::InsertBefore(T data, T input, bool all){
       previous->SetNextPtr(NewNode);
       NewNode->SetNextPtr(current);
       break;
+    } else if(current->GetNextPtr() == nullptr){
+      std::cerr << "Error: Insert value not found." << std::endl;
+      return;
     }
   }
 
@@ -172,7 +187,7 @@ void LinkedList<T>::InsertBefore(T data, T input, bool all){
 }
 
 template<typename T>
-void LinkedList<T>::InsertAfter(T data, T input, bool all){
+void LinkedList<T>::InsertAfter(T input, T data, bool all){
 
   if(this->size == 0){ return; }
 
@@ -198,6 +213,9 @@ void LinkedList<T>::InsertAfter(T data, T input, bool all){
       NewNode->SetNextPtr(next);
       current->SetNextPtr(NewNode);
       break;
+    } else if(current->GetNextPtr() == nullptr){
+      std::cerr << "Error: Insert value not found." << std::endl;
+      return;
     }
   }
 

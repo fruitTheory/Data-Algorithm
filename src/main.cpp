@@ -8,14 +8,15 @@ int main(){
   LinkedList<int> list;
 
   list.AddHead(20);
-  list.AddTail(60);
-  list.AddTail(40);
+  list.InsertBefore(20, 40);
+  list.InsertAfter(20, 40);
   list.AddTail(90);
-  list.InsertBefore(100, 20);
+  list.InsertBefore(90, 50);
+  list.InsertAfter(90, 40);
 
-  list.RemoveHead();
-  list.RemoveTail();
-  list.Remove(60);
+  list.Remove(90);
+  list.AddTail(200);
+
 
   list.PrintList();
   print(list.GetSize());  
