@@ -42,6 +42,9 @@ public:
     this->tail = nullptr;
     this->size = 0;
   }
+  ~LinkedList();
+  LinkedList(const LinkedList<T> &list);
+  LinkedList &operator=(const LinkedList<T> &list);
 
   int GetSize(){ return this->size; }
   void AddHead(T data);
@@ -74,7 +77,6 @@ void LinkedList<T>::AddTail(T data){
     this->size++;
     return;
   } 
-  
   Node<T> *current = head;
   Node<T> *previous = nullptr;
 
@@ -86,8 +88,35 @@ void LinkedList<T>::AddTail(T data){
       previous->SetNextPtr(NewNode);
     }
   }
-
   this->size++;
+}
+
+template<typename T>
+LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T> &list){
+
+}
+
+template<typename T>
+LinkedList<T>::LinkedList(const LinkedList<T> &list){
+
+  Node<T> *current = list.head;
+
+  while(current != nullptr){
+
+    Node<T>* node = new Node(current->GetData());
+
+    if(tail != nullptr){
+      tail->SetNextPtr(node);
+      tail = node;
+    } else{
+      head = node;
+      tail = node;
+    }
+    
+    current = current->GetNextPtr();
+  }
+
+  size = list.size;
 }
 
 template<typename T>
@@ -107,6 +136,7 @@ template<typename T>
 void LinkedList<T>::RemoveTail(){
 
   if(this->size == 0){ return; }
+  if(this->size == 1){ RemoveHead(); return;}
 
   Node<T> *current = head;
   Node<T> *previous = nullptr;
@@ -229,5 +259,16 @@ void LinkedList<T>::PrintList(){
     T data = current->GetData();
     std::cout << data << "\n";
     current = current->GetNextPtr();
+  }
+}
+
+template<typename T>
+LinkedList<T>::~LinkedList(){
+  Node<T> *current = head;
+  while(current != nullptr){
+    Node<T> *previous = current;
+    current = current->GetNextPtr();
+    delete previous;
+    previous = nullptr;
   }
 }
