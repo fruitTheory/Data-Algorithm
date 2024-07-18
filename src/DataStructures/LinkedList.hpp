@@ -54,13 +54,15 @@ public:
   void Remove(T input);
   void InsertBefore(T input, T data, bool all=false);
   void InsertAfter(T input, T data, bool all=false);
+  void Append(T value); 
+  void Clear();
   void PrintList();
 
 };
 
 template<typename T>
 void LinkedList<T>::AddHead(T data){
-  head = new Node(data, head);
+  head = new Node<T>(data, head);
   // Set tail to head if empty
   if(tail == nullptr)
   {tail = head;}
@@ -69,7 +71,7 @@ void LinkedList<T>::AddHead(T data){
 
 template<typename T>
 void LinkedList<T>::AddTail(T data){
-  Node<T> *NewNode = new Node(data);
+  Node<T> *NewNode = new Node<T>(data);
 
   if(head == nullptr){
     head = NewNode;
@@ -92,18 +94,16 @@ void LinkedList<T>::AddTail(T data){
 }
 
 template<typename T>
-LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T> &list){
-
-}
-
-template<typename T>
 LinkedList<T>::LinkedList(const LinkedList<T> &list){
 
   Node<T> *current = list.head;
+  // For some reason tail is null but head is not?
+  if(this->head == nullptr){
+    print("null");
+  } print("test");
 
   while(current != nullptr){
-
-    Node<T>* node = new Node(current->GetData());
+    Node<T>* node = new Node<T>(current->GetData());
 
     if(tail != nullptr){
       tail->SetNextPtr(node);
@@ -117,6 +117,38 @@ LinkedList<T>::LinkedList(const LinkedList<T> &list){
   }
 
   size = list.size;
+}
+
+// template<typename T>
+// LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T> &list){
+//     if(this != &list){
+//       clear();
+//       copyList(list);
+//     }
+//     return *this;
+// }
+
+template <typename T>
+void LinkedList<T>::Append(T value){
+  if(head == nullptr){
+    head = new Node(value);
+  } 
+  else{
+    Node *current = head;
+    while (current->next != nullptr){
+      current = current->next;
+    }
+    current->next = new Node<T>(value);
+  }
+}
+
+template <typename T>
+void LinkedList<T>::Clear(){
+    while(head != nullptr){
+      Node *temp = head;
+      head = head->next;
+      delete temp;
+    }
 }
 
 template<typename T>
@@ -198,12 +230,12 @@ void LinkedList<T>::InsertBefore(T input, T data, bool all){
     current = current->GetNextPtr();
 
     if(previous->GetData() == input){
-      head = new Node(data, head);
+      head = new Node<T>(data, head);
       break;
     }
 
     if(current->GetData() == input){
-      Node<T> *NewNode = new Node(data);
+      Node<T> *NewNode = new Node<T>(data);
       previous->SetNextPtr(NewNode);
       NewNode->SetNextPtr(current);
       break;
@@ -231,14 +263,14 @@ void LinkedList<T>::InsertAfter(T input, T data, bool all){
 
     // Case for head
     if(previous->GetData() == input){
-      Node<T> *NewNode = new Node(data);
+      Node<T> *NewNode = new Node<T>(data);
       previous->SetNextPtr(NewNode);
       NewNode->SetNextPtr(current);
       break;
     }
     
     if(current->GetData() == input){
-      Node<T> *NewNode = new Node(data);
+      Node<T> *NewNode = new Node<T>(data);
       next = current->GetNextPtr();
       NewNode->SetNextPtr(next);
       current->SetNextPtr(NewNode);

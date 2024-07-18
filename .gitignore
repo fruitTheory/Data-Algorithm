@@ -1,6 +1,9 @@
 bin
 build
-.vscode
+debug
+.vscode/settings*
+*.pdb
+*.obj
 *BinaryTree*
 *Graph*
 *Hashtable*

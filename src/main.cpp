@@ -19,6 +19,9 @@ int main(){
   
   list.PrintList();
   LinkedList<int> list2 = list;
+  // LinkedList<int> list3;
+  // list3 = list2;
+  // list3.PrintList();
   list2.PrintList();
   print(list2.GetSize());
   
