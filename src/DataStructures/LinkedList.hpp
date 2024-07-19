@@ -54,8 +54,6 @@ public:
   void Remove(T input);
   void InsertBefore(T input, T data, bool all=false);
   void InsertAfter(T input, T data, bool all=false);
-  void Append(T value); 
-  void Clear();
   void PrintList();
 
 };
@@ -63,7 +61,6 @@ public:
 template<typename T>
 void LinkedList<T>::AddHead(T data){
   head = new Node<T>(data, head);
-  // Set tail to head if empty
   if(tail == nullptr)
   {tail = head;}
   this->size++;
@@ -97,22 +94,17 @@ template<typename T>
 LinkedList<T>::LinkedList(const LinkedList<T> &list){
 
   Node<T> *current = list.head;
-  // For some reason tail is null but head is not?
-  if(this->head == nullptr){
-    print("null");
-  } print("test");
+  head = nullptr;
+  tail = nullptr;
 
   while(current != nullptr){
     Node<T>* node = new Node<T>(current->GetData());
 
-    if(tail != nullptr){
-      tail->SetNextPtr(node);
-      tail = node;
+    if(head == nullptr){
+      AddHead(node->GetData());
     } else{
-      head = node;
-      tail = node;
+      AddTail(node->GetData());
     }
-    
     current = current->GetNextPtr();
   }
 
@@ -122,34 +114,11 @@ LinkedList<T>::LinkedList(const LinkedList<T> &list){
 // template<typename T>
 // LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T> &list){
 //     if(this != &list){
-//       clear();
-//       copyList(list);
+//       // clear list
+//       // copy list
 //     }
-//     return *this;
+//     return *this object;
 // }
-
-template <typename T>
-void LinkedList<T>::Append(T value){
-  if(head == nullptr){
-    head = new Node(value);
-  } 
-  else{
-    Node *current = head;
-    while (current->next != nullptr){
-      current = current->next;
-    }
-    current->next = new Node<T>(value);
-  }
-}
-
-template <typename T>
-void LinkedList<T>::Clear(){
-    while(head != nullptr){
-      Node *temp = head;
-      head = head->next;
-      delete temp;
-    }
-}
 
 template<typename T>
 void LinkedList<T>::RemoveHead(){
@@ -274,6 +243,9 @@ void LinkedList<T>::InsertAfter(T input, T data, bool all){
       next = current->GetNextPtr();
       NewNode->SetNextPtr(next);
       current->SetNextPtr(NewNode);
+      if(next == nullptr){
+        tail = NewNode;
+      }
       break;
     } else if(current->GetNextPtr() == nullptr){
       std::cerr << "Error: Insert value not found." << std::endl;

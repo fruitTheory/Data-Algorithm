@@ -14,16 +14,15 @@ int main(){
   list.AddTail(40);
   list.AddHead(60);
   list.InsertAfter(40, 90);
-  list.InsertBefore(60, 10);
-  list.Remove(10);
-  
   list.PrintList();
+
   LinkedList<int> list2 = list;
+  list2.PrintList();
+  print(list2.GetSize());
+
   // LinkedList<int> list3;
   // list3 = list2;
   // list3.PrintList();
-  list2.PrintList();
-  print(list2.GetSize());
   
 
   std::cout << "Goodbye" << std::endl;
