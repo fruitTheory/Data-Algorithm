@@ -16,7 +16,7 @@ public:
     ~DynamicArray(){ delete[] data; };
 
     void push_back(const T& value);
-    void pop_back();
+    void pop_back(){ size > 0 ? --size : size; }
     void print_arr();
     T& operator[](size_t index);
     size_t get_size() const{ return size; };
@@ -40,13 +40,6 @@ void DynamicArray<T>::push_back(const T& value){
         resize(capacity == 0 ? 1 : capacity * 2);
     }
     data[size++] = value;
-}
-
-template<typename T>
-void DynamicArray<T>::pop_back(){
-    if(size > 0){
-        --size;
-    }
 }
 
 template<typename T>
