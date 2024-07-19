@@ -15,18 +15,9 @@ public:
     this->next = next;
   }
 
-  T GetData() const {
-    return data;
-  }
-
-  Node<T>* GetNextPtr() const {
-    return next;
-  }
-
-  void SetNextPtr(Node<T>* next){
-    this->next = next;
-  }
-
+  T GetData() const { return data; }
+  Node<T>* GetNextPtr() const { return next; }
+  void SetNextPtr(Node<T>* next){ this->next = next; }
 };
 
 template<typename T>
