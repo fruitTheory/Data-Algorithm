@@ -45,6 +45,8 @@ public:
   ~LinkedList();
   LinkedList(const LinkedList<T> &list);
   LinkedList &operator=(const LinkedList<T> &list);
+  LinkedList(LinkedList<T> &&list) noexcept;
+  LinkedList &operator=(LinkedList<T> &&list) noexcept;
 
   int GetSize(){ return this->size; }
   void AddHead(T data);
@@ -116,22 +118,45 @@ LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T> &list){
     while(this->head != nullptr){
       RemoveHead();
     }
-    
+
     Node<T> *current = list.head;
     head = nullptr;
     tail = nullptr;
     while(current != nullptr){
       Node<T>* node = new Node<T>(current->GetData());
 
-      if(head == nullptr){
-        AddHead(node->GetData());
-      } else{
-        AddTail(node->GetData());
-      }
+      if(head == nullptr){ AddHead(node->GetData()); }
+      else{ AddTail(node->GetData()); }
+      
       current = current->GetNextPtr();
     }
     size = list.size;
 
+  }
+  return *this;
+}
+
+template<typename T>
+LinkedList<T>::LinkedList(LinkedList<T> &&list) noexcept{
+  head = list.head;
+  tail = list.tail;
+  size = list.size;
+
+  list.head = nullptr;
+  list.tail = nullptr;
+  list.size = 0;
+}
+
+template<typename T>
+LinkedList<T>& LinkedList<T>::operator=(LinkedList<T> &&list) noexcept{
+  if(this != &list){
+    head = list.head;
+    tail = list.tail;
+    size = list.size;
+
+    list.head = nullptr;
+    list.tail = nullptr;
+    list.size = 0;
   }
   return *this;
 }
@@ -198,7 +223,6 @@ void LinkedList<T>::Remove(T input){
       return;
     }
   }
-
   this->size--;
 }
 

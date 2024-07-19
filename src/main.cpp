@@ -7,7 +7,11 @@ int main(){
 
   DynamicArray<int> arr;
   arr.push_back(60);
-  arr.get_size();
+  arr.push_back(40);
+  arr.push_back(20);
+  arr.pop_back();
+  arr.push_back(80);
+  arr.print_arr();
   
   LinkedList<int> list;
   list.AddHead(60);
@@ -22,8 +26,10 @@ int main(){
   list3.AddHead(100);
   list3.AddHead(200);
   list3 = list2;
-  list3.PrintList();
-  
+
+  LinkedList<int> list4 = std::move(list2);
+  list4.PrintList();
+  list3 = std::move(list4);
 
   std::cout << "Goodbye" << std::endl;
 

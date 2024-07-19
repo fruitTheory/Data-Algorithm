@@ -2,7 +2,10 @@
 
 Implemented:  
 - LinkedList  
+  - Copy/Move constructor and Assignment
+  - Debugged to check if all working
 - DynamicArray  
+  - Simple heap allocated array
 
 Not Implement:  
 - BinaryTree
