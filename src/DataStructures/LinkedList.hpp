@@ -69,7 +69,6 @@ void LinkedList<T>::AddHead(T data){
 template<typename T>
 void LinkedList<T>::AddTail(T data){
   Node<T> *NewNode = new Node<T>(data);
-
   if(head == nullptr){
     head = NewNode;
     tail = NewNode;
@@ -96,7 +95,6 @@ LinkedList<T>::LinkedList(const LinkedList<T> &list){
   Node<T> *current = list.head;
   head = nullptr;
   tail = nullptr;
-
   while(current != nullptr){
     Node<T>* node = new Node<T>(current->GetData());
 
@@ -107,18 +105,36 @@ LinkedList<T>::LinkedList(const LinkedList<T> &list){
     }
     current = current->GetNextPtr();
   }
-
   size = list.size;
 }
 
-// template<typename T>
-// LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T> &list){
-//     if(this != &list){
-//       // clear list
-//       // copy list
-//     }
-//     return *this object;
-// }
+template<typename T>
+LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T> &list){
+
+  if(this != &list){
+    // Cleanup
+    while(this->head != nullptr){
+      RemoveHead();
+    }
+    
+    Node<T> *current = list.head;
+    head = nullptr;
+    tail = nullptr;
+    while(current != nullptr){
+      Node<T>* node = new Node<T>(current->GetData());
+
+      if(head == nullptr){
+        AddHead(node->GetData());
+      } else{
+        AddTail(node->GetData());
+      }
+      current = current->GetNextPtr();
+    }
+    size = list.size;
+
+  }
+  return *this;
+}
 
 template<typename T>
 void LinkedList<T>::RemoveHead(){
@@ -213,7 +229,6 @@ void LinkedList<T>::InsertBefore(T input, T data, bool all){
       return;
     }
   }
-
   this->size++;
 }
 
@@ -252,7 +267,6 @@ void LinkedList<T>::InsertAfter(T input, T data, bool all){
       return;
     }
   }
-
   this->size++;
 }
 

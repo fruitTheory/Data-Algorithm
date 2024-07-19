@@ -9,20 +9,20 @@ int main(){
   arr.push_back(60);
   arr.get_size();
   
-
   LinkedList<int> list;
-  list.AddTail(40);
   list.AddHead(60);
-  list.InsertAfter(40, 90);
+  list.AddHead(40);
+  list.AddHead(20);
   list.PrintList();
 
   LinkedList<int> list2 = list;
   list2.PrintList();
-  print(list2.GetSize());
 
-  // LinkedList<int> list3;
-  // list3 = list2;
-  // list3.PrintList();
+  LinkedList<int> list3;
+  list3.AddHead(100);
+  list3.AddHead(200);
+  list3 = list2;
+  list3.PrintList();
   
 
   std::cout << "Goodbye" << std::endl;
