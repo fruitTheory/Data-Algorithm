@@ -1,5 +1,6 @@
 #pragma once
 
+#include "utility.hpp"
 #include "LinkedList.hpp"
 #include "DynamicArray.hpp"
-#include "utility.hpp"
+#include "Stack.hpp"

@@ -6,6 +6,8 @@ Implemented:
   - Debugged to check if all working
 - DynamicArray  
   - Simple heap allocated array
+- Stacks
+  - Basic array O(1)
 
 Not Implement:  
 - BinaryTree
@@ -13,7 +15,6 @@ Not Implement:
 - Hashtable  
 - Heap  
 - Queues  
-- Stack  
 - Tree  
 - Trie  
 --

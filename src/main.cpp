@@ -5,31 +5,18 @@ int main(){
 
   std::cout << "Hello" << std::endl;
 
-  DynamicArray<int> arr;
-  arr.push_back(60);
-  arr.push_back(40);
-  arr.push_back(20);
-  arr.pop_back();
-  arr.push_back(80);
-  arr.print_arr();
-  
-  LinkedList<int> list;
-  list.AddHead(60);
-  list.AddHead(40);
-  list.AddHead(20);
-  list.PrintList();
+  Stack<int> stack = {1, 2 ,3};
+  stack.print_stack();
+  stack.pop();
+  stack.push(6);
+  stack.push(8);
+  stack.push(10);
+  stack.print_stack();
 
-  LinkedList<int> list2 = list;
-  list2.PrintList();
-
-  LinkedList<int> list3;
-  list3.AddHead(100);
-  list3.AddHead(200);
-  list3 = list2;
-
-  LinkedList<int> list4 = std::move(list2);
-  list4.PrintList();
-  list3 = std::move(list4);
+  Stack<int> stack2;
+  stack2.push(40);stack2.push(50);stack2.push(60);
+  stack2.print_stack();
+  stack2.pop(); stack2.print_stack();
 
   std::cout << "Goodbye" << std::endl;
 
