@@ -7,7 +7,7 @@ Implemented:
 - DynamicArray  
   - Simple heap allocated array
 - Stacks
-  - Basic array O(1)
+  - Basic array mostly O(1)
 
 Not Implement:  
 - BinaryTree
