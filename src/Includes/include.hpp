@@ -4,3 +4,4 @@
 #include "LinkedList.hpp"
 #include "DynamicArray.hpp"
 #include "Stack.hpp"
+#include "Queues.hpp"

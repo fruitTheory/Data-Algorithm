@@ -27,6 +27,11 @@ private:
   size_t size;
 
 public:
+  int GetSize(){ return this->size; }
+  Node<T>* GetHead(){ return this->head; }
+  Node<T>* GetTail(){ return this->tail; }
+
+public:
   LinkedList(){
     this->head = nullptr;
     this->tail = nullptr;
@@ -38,12 +43,12 @@ public:
   LinkedList(LinkedList<T> &&list) noexcept;
   LinkedList &operator=(LinkedList<T> &&list) noexcept;
 
-  int GetSize(){ return this->size; }
   void AddHead(T data);
   void AddTail(T data);
   void RemoveHead();
   void RemoveTail();
   void Remove(T input);
+  bool Find(T input);
   void InsertBefore(T input, T data, bool all=false);
   void InsertAfter(T input, T data, bool all=false);
   void PrintList();
@@ -214,6 +219,21 @@ void LinkedList<T>::Remove(T input){
     }
   }
   this->size--;
+}
+
+template<typename T>
+bool LinkedList<T>::Find(T input){
+
+  Node<T> *current = head;
+  Node<T> *previous = nullptr;
+
+  while(current != nullptr){
+    previous = current;
+    current = current->GetNextPtr();
+    if(previous->GetData() == input){
+      return true;
+    }
+  } return false;
 }
 
 template<typename T>

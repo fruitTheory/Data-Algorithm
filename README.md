@@ -8,13 +8,14 @@ Implemented:
   - Simple heap allocated array
 - Stacks
   - Basic array mostly O(1)
+-Queues
+  - Queue based on linked list FIFO
 
 Not Implement:  
 - BinaryTree
 - Graph  
 - Hashtable  
 - Heap  
-- Queues  
 - Tree  
 - Trie  
 --

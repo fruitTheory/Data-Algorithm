@@ -21,7 +21,8 @@ Stack(initializer_list<T> init_list);
 
 void pop(){ if(size > 0){--this->size;} };
 void push(T value);
-void peek(){ if(size > 0){ std::cout << data[this->size-1] << "\n"; } }
+bool find(T value);
+void peek() const;
 size_t get_size() const { return this->size; }
 void print_stack();
 
@@ -42,6 +43,23 @@ void Stack<T>::print_stack(){
       std::cout << data[x] << " ";
     } std::cout << std::endl;
   }
+}
+
+template<typename T>
+void Stack<T>::peek() const {
+   if(size > 0){ 
+    std::cout << "Next in stack: "
+    << data[this->size-1] << "\n"; 
+  }
+}
+
+template<typename T>
+bool Stack<T>::find(T value){
+  for(int x = 0; x < this->size; x++){
+    if(this->data[x] == value){
+      return true;
+    }
+  } return false;
 }
 
 template<typename T>
