@@ -2,7 +2,6 @@
 
 #include "LinkedList.hpp"
 
-
 template<typename T>
 class Queue
 {
@@ -24,6 +23,8 @@ void print_queue(){ this->queue->PrintList(); }
 template<typename T>
 void Queue<T>::peek() const {
   Node<T> *node = this->queue->GetHead();
-  std::cout << "Next in queue: " << 
-  node->GetData() << "\n";
+  if(node != nullptr){
+    std::cout << "Next in queue: " << 
+    node->GetData() << "\n";
+  }
 }
