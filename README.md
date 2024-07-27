@@ -8,7 +8,7 @@ Implemented:
   - Simple heap allocated array
 - Stacks
   - Basic array mostly O(1)
--Queues
+- Queues
   - Queue based on linked list FIFO
 
 Not Implement:  
