@@ -6,13 +6,13 @@ Implemented:
   - Debugged to check if all working
 - DynamicArray  
   - Simple heap allocated array
-- Stacks
+- Stack
   - Basic array mostly O(1)
 - Queues
   - Queue based on linked list FIFO
 
 Not Implement:  
-- BinaryTree
+- BinarySearchTree
 - Graph  
 - Hashtable  
 - Heap 
