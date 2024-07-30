@@ -5,3 +5,4 @@
 #include "DynamicArray.hpp"
 #include "Stack.hpp"
 #include "Queues.hpp"
+#include "BinarySearchTree.hpp"

@@ -49,7 +49,7 @@ template<typename T>
 void Stack<T>::peek() const {
    if(size > 0){ 
     std::cout << "Next in stack: "
-    << data[this->size-1] << "\n"; 
+    << data[this->size-1] << std::endl; 
   }
 }
 

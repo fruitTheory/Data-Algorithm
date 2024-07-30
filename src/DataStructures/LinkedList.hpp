@@ -4,60 +4,60 @@
 #include "utility.hpp"
 
 template<typename T>
-class Node{
+class LinkedNode{
 private:
-  T data;
-  Node<T> *next;
+T data;
+LinkedNode<T> *next;
 
 public:
-  Node(T data, Node *next=nullptr){
-    this->data = data;
-    this->next = next;
-  }
-  T GetData() const { return data; }
-  Node<T>* GetNextPtr() const { return next; }
-  void SetNextPtr(Node<T>* next){ this->next = next; }
+LinkedNode(T data, LinkedNode *next=nullptr){
+  this->data = data;
+  this->next = next;
+}
+T GetData() const { return this->data; }
+LinkedNode<T>* GetNextPtr() const { return this->next; }
+void SetNextPtr(LinkedNode<T>* next){ this->next = next; }
 };
 
 template<typename T>
 class LinkedList{
 private:
-  Node<T> *head;
-  Node<T> *tail;
-  size_t size;
+LinkedNode<T> *head;
+LinkedNode<T> *tail;
+size_t size;
 
 public:
-  int GetSize(){ return this->size; }
-  Node<T>* GetHead(){ return this->head; }
-  Node<T>* GetTail(){ return this->tail; }
+int GetSize(){ return this->size; }
+LinkedNode<T>* GetHead(){ return this->head; }
+LinkedNode<T>* GetTail(){ return this->tail; }
 
 public:
-  LinkedList(){
-    this->head = nullptr;
-    this->tail = nullptr;
-    this->size = 0;
-  }
-  ~LinkedList();
-  LinkedList(const LinkedList<T> &list);
-  LinkedList &operator=(const LinkedList<T> &list);
-  LinkedList(LinkedList<T> &&list) noexcept;
-  LinkedList &operator=(LinkedList<T> &&list) noexcept;
+LinkedList(){
+  this->head = nullptr;
+  this->tail = nullptr;
+  this->size = 0;
+}
+~LinkedList();
+LinkedList(const LinkedList<T> &list);
+LinkedList &operator=(const LinkedList<T> &list);
+LinkedList(LinkedList<T> &&list) noexcept;
+LinkedList &operator=(LinkedList<T> &&list) noexcept;
 
-  void AddHead(T data);
-  void AddTail(T data);
-  void RemoveHead();
-  void RemoveTail();
-  void Remove(T input);
-  bool Find(T input);
-  void InsertBefore(T input, T data, bool all=false);
-  void InsertAfter(T input, T data, bool all=false);
-  void PrintList();
+void AddHead(T data);
+void AddTail(T data);
+void RemoveHead();
+void RemoveTail();
+void Remove(T input);
+bool Find(T input);
+void InsertBefore(T input, T data, bool all=false);
+void InsertAfter(T input, T data, bool all=false);
+void PrintList();
 
 };
 
 template<typename T>
 void LinkedList<T>::AddHead(T data){
-  head = new Node<T>(data, head);
+  head = new LinkedNode<T>(data, head);
   if(tail == nullptr)
   {tail = head;}
   this->size++;
@@ -65,15 +65,15 @@ void LinkedList<T>::AddHead(T data){
 
 template<typename T>
 void LinkedList<T>::AddTail(T data){
-  Node<T> *NewNode = new Node<T>(data);
+  LinkedNode<T> *NewNode = new LinkedNode<T>(data);
   if(head == nullptr){
     head = NewNode;
     tail = NewNode;
     this->size++;
     return;
   } 
-  Node<T> *current = head;
-  Node<T> *previous = nullptr;
+  LinkedNode<T> *current = head;
+  LinkedNode<T> *previous = nullptr;
 
   while(current != nullptr){
     previous = current;
@@ -89,11 +89,11 @@ void LinkedList<T>::AddTail(T data){
 template<typename T>
 LinkedList<T>::LinkedList(const LinkedList<T> &list){
 
-  Node<T> *current = list.head;
+  LinkedNode<T> *current = list.head;
   head = nullptr;
   tail = nullptr;
   while(current != nullptr){
-    Node<T>* node = new Node<T>(current->GetData());
+    LinkedNode<T>* node = new LinkedNode<T>(current->GetData());
 
     if(head == nullptr){
       AddHead(node->GetData());
@@ -114,11 +114,11 @@ LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T> &list){
       RemoveHead();
     }
 
-    Node<T> *current = list.head;
+    LinkedNode<T> *current = list.head;
     head = nullptr;
     tail = nullptr;
     while(current != nullptr){
-      Node<T>* node = new Node<T>(current->GetData());
+      LinkedNode<T>* node = new LinkedNode<T>(current->GetData());
 
       if(head == nullptr){ AddHead(node->GetData()); }
       else{ AddTail(node->GetData()); }
@@ -161,7 +161,7 @@ void LinkedList<T>::RemoveHead(){
 
   if(this->size == 0){ return; }
 
-  Node<T> *OldHead = head;
+  LinkedNode<T> *OldHead = head;
   head = head->GetNextPtr();
   delete OldHead;
   OldHead = nullptr;
@@ -175,8 +175,8 @@ void LinkedList<T>::RemoveTail(){
   if(this->size == 0){ return; }
   if(this->size == 1){ RemoveHead(); return;}
 
-  Node<T> *current = head;
-  Node<T> *previous = nullptr;
+  LinkedNode<T> *current = head;
+  LinkedNode<T> *previous = nullptr;
 
   // Reaching end of list
   while(current->GetNextPtr() != nullptr){
@@ -202,18 +202,18 @@ void LinkedList<T>::Remove(T input){
     return;
   } 
 
-  Node<T> *current = head;
-  Node<T> *previous = nullptr;
+  LinkedNode<T> *current = head;
+  LinkedNode<T> *previous = nullptr;
 
   while(current != nullptr){
     previous = current;
     current = current->GetNextPtr();
-    if(current->GetData() == input){
-      Node<T> *Tnext = current->GetNextPtr();
+    if(current != nullptr && current->GetData() == input){
+      LinkedNode<T> *Tnext = current->GetNextPtr();
       previous->SetNextPtr(Tnext);
       delete current;
       current = nullptr;
-    } else if(current->GetNextPtr() == nullptr){
+    } else if(current == nullptr){
       std::cerr << "Error: Remove value not found." << std::endl;
       return;
     }
@@ -224,8 +224,8 @@ void LinkedList<T>::Remove(T input){
 template<typename T>
 bool LinkedList<T>::Find(T input){
 
-  Node<T> *current = head;
-  Node<T> *previous = nullptr;
+  LinkedNode<T> *current = head;
+  LinkedNode<T> *previous = nullptr;
 
   while(current != nullptr){
     previous = current;
@@ -241,24 +241,24 @@ void LinkedList<T>::InsertBefore(T input, T data, bool all){
 
   if(this->size == 0){ return; }
 
-  Node<T> *current = head;
-  Node<T> *previous = nullptr;
+  LinkedNode<T> *current = head;
+  LinkedNode<T> *previous = nullptr;
 
   while(current != nullptr){
     previous = current;
     current = current->GetNextPtr();
 
     if(previous->GetData() == input){
-      head = new Node<T>(data, head);
+      head = new LinkedNode<T>(data, head);
       break;
     }
 
-    if(current->GetData() == input){
-      Node<T> *NewNode = new Node<T>(data);
+    if(current != nullptr && current->GetData() == input){
+      LinkedNode<T> *NewNode = new LinkedNode<T>(data);
       previous->SetNextPtr(NewNode);
       NewNode->SetNextPtr(current);
       break;
-    } else if(current->GetNextPtr() == nullptr){
+    } else if(current == nullptr){
       std::cerr << "Error: Insert value not found." << std::endl;
       return;
     }
@@ -271,9 +271,9 @@ void LinkedList<T>::InsertAfter(T input, T data, bool all){
 
   if(this->size == 0){ return; }
 
-  Node<T> *current = head;
-  Node<T> *previous = nullptr;
-  Node<T> *next = nullptr;
+  LinkedNode<T> *current = head;
+  LinkedNode<T> *previous = nullptr;
+  LinkedNode<T> *next = nullptr;
 
   while(current != nullptr){
     previous = current;
@@ -281,14 +281,14 @@ void LinkedList<T>::InsertAfter(T input, T data, bool all){
 
     // Case for head
     if(previous->GetData() == input){
-      Node<T> *NewNode = new Node<T>(data);
+      LinkedNode<T> *NewNode = new LinkedNode<T>(data);
       previous->SetNextPtr(NewNode);
       NewNode->SetNextPtr(current);
       break;
     }
     
-    if(current->GetData() == input){
-      Node<T> *NewNode = new Node<T>(data);
+    if(current != nullptr && current->GetData() == input){
+      LinkedNode<T> *NewNode = new LinkedNode<T>(data);
       next = current->GetNextPtr();
       NewNode->SetNextPtr(next);
       current->SetNextPtr(NewNode);
@@ -296,7 +296,7 @@ void LinkedList<T>::InsertAfter(T input, T data, bool all){
         tail = NewNode;
       }
       break;
-    } else if(current->GetNextPtr() == nullptr){
+    } else if(current == nullptr){
       std::cerr << "Error: Insert value not found." << std::endl;
       return;
     }
@@ -306,7 +306,7 @@ void LinkedList<T>::InsertAfter(T input, T data, bool all){
 
 template<typename T>
 void LinkedList<T>::PrintList(){
-  Node<T> *current = head;
+  LinkedNode<T> *current = head;
   while(current != nullptr){
     T data = current->GetData();
     std::cout << data << "\n";
@@ -316,9 +316,9 @@ void LinkedList<T>::PrintList(){
 
 template<typename T>
 LinkedList<T>::~LinkedList(){
-  Node<T> *current = head;
+  LinkedNode<T> *current = head;
   while(current != nullptr){
-    Node<T> *previous = current;
+    LinkedNode<T> *previous = current;
     current = current->GetNextPtr();
     delete previous;
     previous = nullptr;

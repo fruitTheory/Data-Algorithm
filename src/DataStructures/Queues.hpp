@@ -22,9 +22,9 @@ void print_queue(){ this->queue->PrintList(); }
 
 template<typename T>
 void Queue<T>::peek() const {
-  Node<T> *node = this->queue->GetHead();
+  LinkedNode<T> *node = this->queue->GetHead();
   if(node != nullptr){
     std::cout << "Next in queue: " << 
-    node->GetData() << "\n";
+    node->GetData() << std::endl;
   }
 }

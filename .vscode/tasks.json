@@ -8,10 +8,11 @@
         "/Zi",
         "/EHsc",
         "/nologo",
-        "/Fe${workspaceFolder}\\debug\\${fileBasenameNoExtension}.exe",
+        "/fsanitize-address",
+        "/Fe${cwd}\\debug\\${fileBasenameNoExtension}.exe",
         "${file}",
-        "/I", "${workspaceFolder}\\src\\Includes",
-        "/I", "${workspaceFolder}\\src\\DataStructures"
+        "/I", "${cwd}\\src\\Includes",
+        "/I", "${cwd}\\src\\DataStructures"
       ],
       "options": {
         "cwd": "${fileDirname}"

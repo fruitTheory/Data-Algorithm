@@ -15,8 +15,7 @@ Not Implement:
 - BinaryTree
 - Graph  
 - Hashtable  
-- Heap  
-- Tree  
+- Heap 
 - Trie  
 --
 - BinarySearch  

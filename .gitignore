@@ -4,9 +4,7 @@ debug
 .vscode/settings*
 *.pdb
 *.obj
-*BinaryTree*
 *Graph*
 *Hashtable*
 *Heap*
-*Trees*
 *Trie*
