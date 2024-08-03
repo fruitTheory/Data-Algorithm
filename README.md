@@ -10,9 +10,10 @@ Implemented:
   - Basic array mostly O(1)
 - Queues
   - Queue based on linked list FIFO
+- BinarySearchTree
+  - Ownership system, In progress
 
 Not Implement:  
-- BinarySearchTree
 - Graph  
 - Hashtable  
 - Heap 
