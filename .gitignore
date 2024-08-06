@@ -6,5 +6,4 @@ debug
 *.obj
 *Graph*
 *Hashtable*
-*Heap*
 *Trie*

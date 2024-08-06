@@ -6,3 +6,4 @@
 #include "Stack.hpp"
 #include "Queues.hpp"
 #include "BinarySearchTree.hpp"
+#include "Heap.hpp"

@@ -19,11 +19,7 @@ int main(){
   tree.Insert(56);
   tree.Insert(58);
 
-  tree.Remove(55);
-  tree.Remove(40);
-  tree.Remove(42);
-  tree.Remove(48);
-  tree.Remove(57);
+  tree.Remove(45);
 
   std::cout << "Goodbye" << std::endl;
 

@@ -41,6 +41,7 @@ BinarySearchTree() = default;
 ~BinarySearchTree() = default;
 void Insert(T data);
 void Remove(T data);
+void RemoveRoot(T data);
 unique_ptr<BST_Node<T>> GetSingleChild(BST_Node<T> *node);
 int GetInorderSuccessor(BST_Node<T> *node);
 int CountChildren(BST_Node<T> *node);
@@ -88,13 +89,42 @@ int BinarySearchTree<T>::GetInorderSuccessor(BST_Node<T> *node){
 }
 
 template<typename T>
+void BinarySearchTree<T>::RemoveRoot(T data){
+
+  BST_Node<T>* root_ptr = this->root.get();
+
+  int child_count = CountChildren(root_ptr);
+  switch(child_count)
+  {
+  case 0:{
+    this->root.reset();
+    break;
+  }
+  case 1:{
+    unique_ptr<BST_Node<T>> child = GetSingleChild(root_ptr);
+    this->root = std::move(child);
+    break;
+  }
+  case 2:{
+    int sucessor_data = GetInorderSuccessor(root_ptr);
+    root_ptr->SetData(sucessor_data);
+    break;
+  }
+  default:
+    std::cerr << "Child count out of range" << std::endl;
+    break;
+  }
+  return;
+}
+
+template<typename T>
 void BinarySearchTree<T>::Remove(T data){
 
   BST_Node<T>* current = this->root.get();
   BST_Node<T>* previous = nullptr;
 
   if(data == current->GetData()){ 
-    std::cout << "Root removal not implemented" << std::endl;
+    RemoveRoot(data);
     return;
   }
 
