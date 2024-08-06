@@ -42,21 +42,15 @@ BinarySearchTree() = default;
 void Insert(T data);
 void Remove(T data);
 unique_ptr<BST_Node<T>> GetSingleChild(BST_Node<T> *node);
+int GetInorderSuccessor(BST_Node<T> *node);
 int CountChildren(BST_Node<T> *node);
-int WhichEdge(BST_Node<T> *node);
+void PrintTree();
 };
 
 template<typename T>
 unique_ptr<BST_Node<T>> BinarySearchTree<T>::GetSingleChild(BST_Node<T> *node){
   if(node->GetLeftPtr() != nullptr){ return node->GetLeft(); }
   else{ return node->GetRight(); }
-}
-
-// Which child exists, 0 for left 1 for right
-template<typename T>
-int BinarySearchTree<T>::WhichEdge(BST_Node<T> *node){
-  if(node->GetLeftPtr() != nullptr){ return 0; }
-  else{ return 1; }
 }
 
 template<typename T>
@@ -67,6 +61,32 @@ int BinarySearchTree<T>::CountChildren(BST_Node<T> *node){
   return child_count;
 }
 
+// Returns sucessor data - Warning: this edits tree if next node has no left edge
+template<typename T>
+int BinarySearchTree<T>::GetInorderSuccessor(BST_Node<T> *node){
+
+  BST_Node<T>* current = node->GetRightPtr();
+  BST_Node<T>* previous = nullptr;
+
+  // If theres not a left node, set to next right and return data
+  if(current->GetLeftPtr() == nullptr){ 
+    int sucessor = current->GetData();
+    unique_ptr<BST_Node<T>> next = current->GetRight();
+    node->SetRight(next);
+    return sucessor; 
+  }
+  // Grab last node furthest to left
+  while(true){
+    previous = current;
+    current = current->GetLeftPtr();
+    if(current->GetLeftPtr() == nullptr){
+      int sucessor = current->GetData();
+      previous->GetLeft().reset();
+      return sucessor;
+    }
+  }
+}
+
 template<typename T>
 void BinarySearchTree<T>::Remove(T data){
 
@@ -75,7 +95,6 @@ void BinarySearchTree<T>::Remove(T data){
 
   if(data == current->GetData()){ 
     std::cout << "Root removal not implemented" << std::endl;
-    // this->root = current->GetLeft();
     return;
   }
 
@@ -96,6 +115,8 @@ void BinarySearchTree<T>::Remove(T data){
           break;
         }
         case 2:{
+          int sucessor_data = GetInorderSuccessor(current);
+          current->SetData(sucessor_data);
           break;
         }
         default:
@@ -108,7 +129,6 @@ void BinarySearchTree<T>::Remove(T data){
       current = current->GetLeftPtr();
       _switch = 0;
     }
-
     else if(data > current->GetData() || (_switch == 1 && data == current->GetData())){
       if(data == current->GetData()){
         int child_count = CountChildren(current);
@@ -124,6 +144,8 @@ void BinarySearchTree<T>::Remove(T data){
           break;
         }
         case 2:{
+          int sucessor_data = GetInorderSuccessor(current);
+          current->SetData(sucessor_data);
           break;
         }
         default:
@@ -137,7 +159,6 @@ void BinarySearchTree<T>::Remove(T data){
       _switch = 1;
     }
   }
-
 }
 
 template<typename T>
@@ -172,4 +193,31 @@ void BinarySearchTree<T>::Insert(T data){
       } else{ current = current->GetRightPtr(); }
     }
   }
+}
+
+// Not implemented
+template<typename T>
+void BinarySearchTree<T>::PrintTree(){
+  int amount;
+  BST_Node<T>* current = this->root.get();
+  BST_Node<T>* previous = nullptr;
+  int _switch = 0;
+
+  while(current != nullptr){
+    std::cout << current->GetData();
+    if(_switch == 0){
+      if(current->GetLeftPtr() == nullptr){ goto switch_label; }
+      previous = current;
+      current = current->GetLeftPtr();
+    } else if(_switch == 1){
+      if(previous->GetRightPtr() == nullptr){ goto switch_label; }
+      current = previous->GetRightPtr();
+    }
+    switch_label:
+    _switch ^= 1;
+  }
+  if(true){ amount = 2; }else{amount = 3; }
+  std::string spaces(amount, ' ');
+  std::cout << spaces;
+  std::cout << "L";
 }

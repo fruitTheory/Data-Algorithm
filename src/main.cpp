@@ -10,11 +10,16 @@ int main(){
   tree.Insert(40);
   tree.Insert(55);
   tree.Insert(42);
+  tree.Insert(41);
+  tree.Insert(38);
   tree.Insert(44);
   tree.Insert(50);
   tree.Insert(57);
   tree.Insert(48);
+  tree.Insert(56);
+  tree.Insert(58);
 
+  tree.Remove(55);
   tree.Remove(40);
   tree.Remove(42);
   tree.Remove(48);

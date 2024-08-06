@@ -11,7 +11,8 @@ Implemented:
 - Queues
   - Queue based on linked list FIFO
 - BinarySearchTree
-  - Ownership system, In progress
+  - Ownership system
+  - Deals with inorder successor
 
 Not Implement:  
 - Graph  
