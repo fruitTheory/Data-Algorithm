@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LinkedList.hpp"
+#include <iostream>
 
 template<typename T>
 class Queue

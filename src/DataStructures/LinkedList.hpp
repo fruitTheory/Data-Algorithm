@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include "utility.hpp"
 
 template<typename T>
 class LinkedNode{
