@@ -13,11 +13,12 @@ Implemented:
 - BinarySearchTree
   - Ownership system
   - Deals with inorder successor
+- Heap
+  - Max-heap priority
 
 Not Implement:  
 - Graph  
 - Hashtable  
-- Heap 
 - Trie  
 --
 - BinarySearch  
