@@ -132,9 +132,9 @@ LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T> &list){
 
 template<typename T>
 LinkedList<T>::LinkedList(LinkedList<T> &&list) noexcept{
-  head = list.head;
-  tail = list.tail;
-  size = list.size;
+  this->head = list.head;
+  this->tail = list.tail;
+  this->size = list.size;
 
   list.head = nullptr;
   list.tail = nullptr;
@@ -144,9 +144,9 @@ LinkedList<T>::LinkedList(LinkedList<T> &&list) noexcept{
 template<typename T>
 LinkedList<T>& LinkedList<T>::operator=(LinkedList<T> &&list) noexcept{
   if(this != &list){
-    head = list.head;
-    tail = list.tail;
-    size = list.size;
+    this->head = list.head;
+    this->tail = list.tail;
+    this->size = list.size;
 
     list.head = nullptr;
     list.tail = nullptr;

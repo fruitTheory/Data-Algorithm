@@ -15,10 +15,11 @@ Implemented:
   - Deals with inorder successor
 - Heap
   - Max-heap priority
+- Hashmap
+  - Simple C-like
 
 Not Implement:  
 - Graph  
-- Hashtable  
 - Trie  
 --
 - BinarySearch  
