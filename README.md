@@ -17,10 +17,11 @@ Implemented:
   - Max-heap priority
 - Hashmap
   - Simple C-like
+- Trie 
+  - Ownership IP
 
 Not Implement:  
-- Graph  
-- Trie  
+- Graph   
 --
 - BinarySearch  
 - BubbleSort  

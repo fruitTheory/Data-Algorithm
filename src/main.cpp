@@ -5,10 +5,12 @@ int main(){
 
   std::cout << "Hello" << std::endl;
 
-  Hashmap map;
-  map.Insert("Key", 54389);
-  int value = map.Get("Key");
-  print(value);
+  Trie trie;
+  trie.Insert("Word");
+  trie.Insert("Wont");
+  trie.Insert("Test");
+  trie.FindWord("eek");
+  trie.DeleteWord("wont");
 
   std::cout << "Goodbye" << std::endl;
 
