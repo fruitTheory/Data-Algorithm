@@ -9,8 +9,9 @@ int main(){
   trie.Insert("Word");
   trie.Insert("Wont");
   trie.Insert("Test");
-  trie.FindWord("eek");
-  trie.DeleteWord("wont");
+  std::cout << trie.FindWord("Wont") << std::endl;
+  trie.DeleteWord("Wont");
+  std::cout << trie.FindWord("Wont") << std::endl;
 
   std::cout << "Goodbye" << std::endl;
 

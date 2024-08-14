@@ -20,7 +20,7 @@ void setEndOfWord(bool status){ this->EndOfWord = status; }
 void SetProperty(char key, unique_ptr<TrieNode> node){ child_property.emplace(key, std::move(node)); }
 TrieNode* GetChild(char key){ return child_property[key].get(); }
 size_t GetSize(){ return child_property.size(); }
-// char GetChildChar(){ return child_property.size()>0 ? child_property.begin()->first : ' '; }
+void DeleteNode(char key){ child_property.erase(key); }
 bool KeyExists(char key){ int x = child_property.count(key); return x > 0 ? true:false;}
 char GetChildCharAdv(char c);
 };
@@ -59,30 +59,41 @@ bool Trie::FindWord(string word){
 
   for(size_t x = 0; x < word.size(); x++){
     if(current->KeyExists(word[x])){
+      // Check if is end of word on last loop
+      if(x == word.size()-1 &&
+        current->isEndOfWord()){ return true; }
       current = current->GetChild(word[x]); 
-    } else{ 
-      std::cout << word << " doesn't exist!" << std::endl;
-      return false;}
-  } 
-  std::cout << word << " exists!" << std::endl;
-  return true;
+    } else{ return false;}
+  }
+  return false; 
 }
 
 void Trie::DeleteWord(string word){
   Lowercase(word);
   if(!FindWord(word)){ return; }
+  bool prefixed = hasPrefix(word);
 
   TrieNode* current = this->root.get();
-  current = current->GetChild(word[0]);
+  TrieNode* last_prefixed{nullptr};
+  int iter_prefix{0};
 
-  for(size_t x = 1; x < word.size(); x++){
-
-    if(current->KeyExists(word[x]) && current->GetSize() == 1){
-      current = current->GetChild(word[x]); 
-    } else if(current->KeyExists(word[x]) && current->GetSize() != 1){ 
-      print(word[x]);
-      current = current->GetChild(word[x]); 
-      print("One character exists"); }
+  for(size_t x = 0; x < word.size(); x++){
+    // If not a prefix word, just delete
+    if(!prefixed){
+      current->DeleteNode(word[x]);
+      return;
+    }
+    // Store node if it is the end of a prefix
+    if(current->GetSize() > 1){
+      last_prefixed = current;
+      iter_prefix = x;
+    }
+    // Delete starting at the last prefix split
+    if(current->isEndOfWord()){
+      last_prefixed->DeleteNode(word[iter_prefix]);
+      return;
+    }
+    current = current->GetChild(word[x]);
   }
 }
 
@@ -107,8 +118,7 @@ bool Trie::hasPrefix(string word){
       }
       current = current->GetChild(word[x]); 
     }
-  } 
-
+  }
   return false;
 }
 
