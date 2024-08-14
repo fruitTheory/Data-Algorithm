@@ -29,14 +29,16 @@ class Trie{
 private:
 unique_ptr<TrieNode> root;
 
+protected:
+bool hasPrefix(string word);
+void Lowercase(string &word){ for(char& c:word){c = tolower(c); }}
+
 public:
 Trie(){ this->root = make_unique<TrieNode>(); }
 void Insert(string word);
 bool FindWord(string word);
 void MatchPrefix(string prefix);
 void DeleteWord(string word);
-bool hasPrefix(string word);
-void Lowercase(string &word){ for(char& c:word){c = tolower(c); }}
 void Print(string c);
 };
 
@@ -63,7 +65,7 @@ bool Trie::FindWord(string word){
       if(x == word.size()-1 &&
         current->isEndOfWord()){ return true; }
       current = current->GetChild(word[x]); 
-    } else{ return false;}
+    } else{ return false; }
   }
   return false; 
 }
@@ -88,7 +90,7 @@ void Trie::DeleteWord(string word){
       last_prefixed = current;
       iter_prefix = x;
     }
-    // Delete starting at the last prefix split
+    // Delete starting at last prefix split
     if(current->isEndOfWord()){
       last_prefixed->DeleteNode(word[iter_prefix]);
       return;
