@@ -116,30 +116,70 @@ vector<char> TrieNode::GetKeys(){
   } return keys;
 }
 
+// Get amount of words from a prefix
+int WordAmount(char key, TrieNode* current){
+  int word_amount{0};
+  while(current != nullptr){
+  // If multi-key get current keys, for each key get child node, check if end
+    if(current->GetSize() > 1){
+      vector<char> keys = current->GetKeys();
+      for(char key: keys){
+        TrieNode* temp = current->GetChild(key);
+        if(temp->isEndOfWord()){
+          ++word_amount; }
+      }
+    } else if(current->isEndOfWord()){ ++word_amount; }
+
+    current = current->GetChild(key);
+    if(current != nullptr)
+      key = current->GetKey();
+  } 
+  return word_amount;
+}
+
 string Trie::SeekPrefixWords(char key, TrieNode* current){
 
-  TrieNode* last_prefixed{nullptr};
-  int iter_prefix{0};
   string stem;
-  stem.push_back(key);
-  int word_amount{0};
+  vector<string> stems;
+  // stem.push_back(key); // store orignal key
 
-  // Get amount of words from prefix
-  // while(current != nullptr){
-  //   if(current->isEndOfWord()){
-  //     ++word_amount;
-  //   }
-  //   current = current->GetChild(key);
-  // }
+  char previous_key = key;
+  TrieNode* previous = current;
 
-  // Get letters from each word
-  while(current != nullptr){
-    if(current->GetSize() == 1){
-      key = current->GetKey();
-      stem.push_back(key);
+  int word_amount = WordAmount(key, current);
+  print(word_amount);
+
+  // For each word in word amount we find that word
+  for(int word = 0; word < word_amount; word++){
+    
+    // Get letters from each word
+    while(current != nullptr){
+      // Only to ignore first prefix
+      if(current->GetSize() == 1){
+        key = current->GetKey();
+        stem.push_back(key);
+      }
+
+      // if(current->GetSize() > 1){
+      //   vector<char> keys = current->GetKeys();
+      //   for(char key: keys){
+      //     current->GetChild(key);
+      //     while(current != nullptr){
+      //     }
+      //   }
+      //   stem.push_back(keys[word]);
+      // }
+      // if(current->GetChild(key) != nullptr)
+      //   std::cout << "Key: " << key << " " << current->isEndOfWord() << std::endl;
+
+      if(current->isEndOfWord()){
+        current = previous;
+        key = previous_key;
+        break;
+      }
+      current = current->GetChild(key);
     }
-    std::cout << "End: " << key << " " << current->isEndOfWord() << std::endl;
-    current = current->GetChild(key);
+    stems.push_back(stem);
   }
 
   for(char letter: stem){
