@@ -18,7 +18,8 @@ Implemented:
 - Hashmap
   - Simple C-like
 - Trie 
-  - Ownership IP
+  - Insert, delete, find
+  - Prefix matching in progress
 
 Not Implement:  
 - Graph   

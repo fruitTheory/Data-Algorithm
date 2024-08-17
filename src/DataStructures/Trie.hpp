@@ -24,7 +24,6 @@ TrieNode* GetChild(char key){ return child_property[key].get(); }
 size_t GetSize(){ return child_property.size(); }
 void DeleteNode(char key){ child_property.erase(key); }
 bool KeyExists(char key){ int x = child_property.count(key); return x > 0 ? true:false; }
-// char GetChildCharAdv(char c);
 char GetKey(){ return child_property.size()>0 ? child_property.begin()->first : ' '; }
 vector<char> GetKeys();
 };
@@ -38,6 +37,7 @@ bool hasPrefix(string word);
 string SeekPrefixWords(char key, TrieNode* current);
 void PrintPrefixes(vector<string> words);
 void Lowercase(string &word){ for(char& c:word){c = tolower(c); }}
+int WordAmount(char key, TrieNode* current);
 
 public:
 Trie(){ this->root = make_unique<TrieNode>(); }
@@ -45,7 +45,7 @@ void Insert(string word);
 bool FindWord(string word);
 void MatchPrefix(string prefix);
 void DeleteWord(string word);
-void Print(string c);
+void Print(vector<string> words);
 };
 
 void Trie::Insert(string word){
@@ -78,27 +78,37 @@ bool Trie::FindWord(string word){
 
 void Trie::DeleteWord(string word){
   Lowercase(word);
-  if(!FindWord(word)){ return; }
+  if(!FindWord(word)){
+    std::cout << "DeleteWord: Word doesn't exist!" << std::endl;
+    return; }
   bool prefixed = hasPrefix(word);
 
   TrieNode* current = this->root.get();
-  TrieNode* last_prefixed{nullptr};
-  int iter_prefix{0};
+  TrieNode* current_prefixed{current};
+  int current_EOW{0};
 
+  // If no prefixes or embedded words can delete, handles one letter case
+  if(!prefixed && word.size() > 1){
+    current->DeleteNode(word[0]);
+    return;
+  } else if(!prefixed && word.size() == 1){
+    current->setEndOfWord(false);
+    return;
+  }
   for(size_t x = 0; x < word.size(); x++){
-    // If not a prefix word, just delete
-    if(!prefixed){
-      current->DeleteNode(word[x]);
+    // Case to delete child nodes if its last word in line
+    if(current->isEndOfWord() && current->GetChild(word[x])->GetSize() == 0){
+      current_prefixed->GetChild(word[current_EOW])->DeleteNode(word[current_EOW+1]);
       return;
     }
-    // Store node if it is the end of a prefix
-    if(current->GetSize() > 1){
-      last_prefixed = current;
-      iter_prefix = x;
-    }
-    // Delete starting at last prefix split
+    // Before overlapping after end of word statement
     if(current->isEndOfWord()){
-      last_prefixed->DeleteNode(word[iter_prefix]);
+      current_prefixed = current;
+      current_EOW = x;
+    }
+    // Case if end of word but has size beyond
+    if(current->isEndOfWord() && x == word.size()-1){
+      current_prefixed->setEndOfWord(false);
       return;
     }
     current = current->GetChild(word[x]);
@@ -116,8 +126,8 @@ vector<char> TrieNode::GetKeys(){
   } return keys;
 }
 
-// Get amount of words from a prefix
-int WordAmount(char key, TrieNode* current){
+// Get amount of words from a prefix *Not fully working
+int Trie::WordAmount(char key, TrieNode* current){
   int word_amount{0};
   while(current != nullptr){
   // If multi-key get current keys, for each key get child node, check if end
@@ -130,8 +140,11 @@ int WordAmount(char key, TrieNode* current){
       }
     } else if(current->isEndOfWord()){ ++word_amount; }
 
-    current = current->GetChild(key);
-    if(current != nullptr)
+    if(current->GetSize() != 0){
+      current = current->GetChild(key);
+    } else{ break; }
+
+    if(current->GetKey() != ' ')
       key = current->GetKey();
   } 
   return word_amount;
@@ -141,47 +154,42 @@ string Trie::SeekPrefixWords(char key, TrieNode* current){
 
   string stem;
   vector<string> stems;
-  // stem.push_back(key); // store orignal key
-
   char previous_key = key;
   TrieNode* previous = current;
+  int previous_iter{0};
+  int iter{0};
 
   int word_amount = WordAmount(key, current);
   print(word_amount);
 
   // For each word in word amount we find that word
   for(int word = 0; word < word_amount; word++){
-    
     // Get letters from each word
-    while(current != nullptr){
-      // Only to ignore first prefix
-      if(current->GetSize() == 1){
-        key = current->GetKey();
-        stem.push_back(key);
-      }
+    while(current->GetSize() != 0){
+      ++iter;
 
-      // if(current->GetSize() > 1){
-      //   vector<char> keys = current->GetKeys();
-      //   for(char key: keys){
-      //     current->GetChild(key);
-      //     while(current != nullptr){
-      //     }
-      //   }
-      //   stem.push_back(keys[word]);
-      // }
-      // if(current->GetChild(key) != nullptr)
-      //   std::cout << "Key: " << key << " " << current->isEndOfWord() << std::endl;
+      current = current->GetChild(key);
+      stem.push_back(key);
 
-      if(current->isEndOfWord()){
+      // Reset node and key to previous
+      if(previous->isEndOfWord() && previous_iter <= word){
         current = previous;
         key = previous_key;
         break;
       }
-      current = current->GetChild(key);
+
+      previous = current;
+
+      if(current->GetSize() == 1){
+        key = current->GetKey();
+        stem.push_back(key);
+      }
+      
     }
     stems.push_back(stem);
+    previous_iter = iter;
   }
-
+  // Temp check
   for(char letter: stem){
     std::cout << letter;
   } print("");
@@ -194,13 +202,13 @@ void Trie::MatchPrefix(string prefix){
   Lowercase(prefix);
   TrieNode* current = this->root.get();
 
-  // Set to node at prefix
+  // Set node to end of prefix
   for(size_t x = 0; x < prefix.size(); x++){
     current = current->GetChild(prefix[x]); }
-
   // Get keys at end of prefix
   vector<char> keys = current->GetKeys();
-
+  
+  // For returning later
   vector<string> temp;
 
   // For each key seek possible words
@@ -210,19 +218,16 @@ void Trie::MatchPrefix(string prefix){
     temp.push_back(prefix + stem);
     break;
   }
-
-  print(temp[0]);
-
 }
 
 bool Trie::hasPrefix(string word){
   Lowercase(word);
   TrieNode* current = this->root.get();
-  current = current->GetChild(word[0]);
+  int word_amount = WordAmount(word[0], current);
 
-  for(size_t x = 1; x < word.size(); x++){
+  for(size_t x = 0; x < word.size(); x++){
     if(current->KeyExists(word[x])){
-      if(current->GetSize() > 1){
+      if(current->GetSize() > 1 || word_amount > 1 && x != 0){
         return true;
       }
       current = current->GetChild(word[x]); 
@@ -231,8 +236,10 @@ bool Trie::hasPrefix(string word){
   return false;
 }
 
-void Trie::Print(string c){
-  Lowercase(c);
+void Trie::Print(vector<string> words){
+  for(auto word: words){
+    std::cout << word << std::endl;
+  }
 }
 
 // char TrieNode::GetChildCharAdv(char c){ 
