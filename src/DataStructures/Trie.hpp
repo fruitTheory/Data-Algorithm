@@ -34,7 +34,7 @@ unique_ptr<TrieNode> root;
 
 protected:
 bool hasPrefix(string word);
-string SeekPrefixWords(char key, TrieNode* current);
+vector<string> SeekPrefixWords(char key, TrieNode* current);
 void PrintPrefixes(vector<string> words);
 void Lowercase(string &word){ for(char& c:word){c = tolower(c); }}
 int WordAmount(char key, TrieNode* current);
@@ -45,7 +45,7 @@ void Insert(string word);
 bool FindWord(string word);
 void MatchPrefix(string prefix);
 void DeleteWord(string word);
-void Print(vector<string> words);
+void PrintWords(vector<string> words);
 };
 
 void Trie::Insert(string word){
@@ -150,51 +150,64 @@ int Trie::WordAmount(char key, TrieNode* current){
   return word_amount;
 }
 
-string Trie::SeekPrefixWords(char key, TrieNode* current){
+vector<string> Trie::SeekPrefixWords(char key, TrieNode* current){
 
-  string stem;
-  vector<string> stems;
-  char previous_key = key;
   TrieNode* previous = current;
+  char previous_key = key;
   int previous_iter{0};
   int iter{0};
 
   int word_amount = WordAmount(key, current);
-  print(word_amount);
+  vector<string> stems(word_amount);
+  string stem;
+  // print(word_amount);
 
   // For each word in word amount we find that word
   for(int word = 0; word < word_amount; word++){
-    // Get letters from each word
+    iter = 0; // Clear iter
+    stem.clear(); // Clear word
+    stem.push_back(key);  // Push first key
+
     while(current->GetSize() != 0){
+      // Get letters from each word
+      // Only for first pass if key provided is end of word
+      if(current->isEndOfWord() && previous_iter == 0){
+        ++previous_iter;
+        break;
+      }
+
+      current = current->GetChild(key); // Get next node
       ++iter;
 
-      current = current->GetChild(key);
-      stem.push_back(key);
+      // If only one possible key
+      if(current->GetSize() == 1){
+        key = current->GetKey();
+        stem.push_back(key);
+      } else if(current->GetSize() > 1){
+        vector<char> keys = current->GetKeys();
+      }
 
-      // Reset node and key to previous
-      if(previous->isEndOfWord() && previous_iter <= word){
+      // Reset node and key to go to next word
+      if(current->isEndOfWord() && iter != previous_iter){
+        previous_iter = iter;
         current = previous;
         key = previous_key;
         break;
       }
-
-      previous = current;
-
-      if(current->GetSize() == 1){
-        key = current->GetKey();
-        stem.push_back(key);
-      }
-      
     }
-    stems.push_back(stem);
-    previous_iter = iter;
+    // Store word
+    stems[word] = stem;
   }
-  // Temp check
-  for(char letter: stem){
-    std::cout << letter;
-  } print("");
+  // // Temp check
+  // for(char letter: stem){
+  //   std::cout << letter;
+  // } print("");
 
-  return stem;
+  // for(string stem: stems){
+  //   std::cout << stem << std::endl;
+  // }
+
+  return stems;
 }
 
 // Return vector of words that match prefix
@@ -209,14 +222,18 @@ void Trie::MatchPrefix(string prefix){
   vector<char> keys = current->GetKeys();
   
   // For returning later
-  vector<string> temp;
-
+  vector<string> stems;
   // For each key seek possible words
   for(char key : keys){
-    std::cout << "key: " << key << std::endl;
-    string stem = SeekPrefixWords(key, current);
-    temp.push_back(prefix + stem);
-    break;
+    // std::cout << "key: " << key << std::endl;
+    vector<string> stem_list = SeekPrefixWords(key, current);
+    for(string stem: stem_list){
+      stems.push_back(prefix + stem);
+    } // break;
+  }
+
+  for(string stem: stems){
+    std::cout << stem << std::endl;
   }
 }
 
@@ -236,17 +253,9 @@ bool Trie::hasPrefix(string word){
   return false;
 }
 
-void Trie::Print(vector<string> words){
+// Provide vector of words such as from MatchPrefix()
+void Trie::PrintWords(vector<string> words){
   for(auto word: words){
     std::cout << word << std::endl;
   }
 }
-
-// char TrieNode::GetChildCharAdv(char c){ 
-//   for(int x = 0; x < child_property.size(); x++){
-//     auto it = child_property.begin();
-//     std::advance(it, x);
-//     char current = it->first;
-//     if(current == c){ return current; }
-//   } return ' ';
-// }
