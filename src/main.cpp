@@ -9,11 +9,16 @@ int main(){
   trie.Insert("Wordless");
   trie.Insert("Word");
   trie.Insert("Wor");
+  trie.Insert("Worn");
+  trie.Insert("Woke");
+  trie.Insert("Work");
   trie.Insert("Wok");
   trie.Insert("Wo");
   trie.Insert("W");
-  trie.DeleteWord("W");
+  // trie.DeleteWord("W");
 
+  
+  
   trie.MatchPrefix("Wo");
 
   std::cout << "Goodbye" << std::endl;
