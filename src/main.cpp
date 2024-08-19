@@ -7,6 +7,8 @@ int main(){
 
   Trie trie;
   trie.Insert("Wordless");
+  trie.Insert("Wordleft");
+  trie.Insert("Wordlefts");
   trie.Insert("Word");
   trie.Insert("Wor");
   trie.Insert("Worn");
@@ -15,11 +17,10 @@ int main(){
   trie.Insert("Wok");
   trie.Insert("Wo");
   trie.Insert("W");
-  // trie.DeleteWord("W");
+  
+  trie.DeleteWord("Wordleft");
 
-  
-  
-  trie.MatchPrefix("Wo");
+  vector<string> s = trie.MatchPrefix("Wo");
 
   std::cout << "Goodbye" << std::endl;
 

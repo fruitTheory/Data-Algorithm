@@ -18,8 +18,7 @@ Implemented:
 - Hashmap
   - Simple C-like
 - Trie 
-  - Insert, delete, find
-  - Prefix matching in progress
+  - Insert, delete, prefix matching
 
 Not Implement:  
 - Graph   
