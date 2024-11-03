@@ -5,22 +5,15 @@ int main(){
 
   std::cout << "Hello" << std::endl;
 
-  Trie trie;
-  trie.Insert("Wordless");
-  trie.Insert("Wordleft");
-  trie.Insert("Wordlefts");
-  trie.Insert("Word");
-  trie.Insert("Wor");
-  trie.Insert("Worn");
-  trie.Insert("Woke");
-  trie.Insert("Work");
-  trie.Insert("Wok");
-  trie.Insert("Wo");
-  trie.Insert("W");
-  
-  trie.DeleteWord("Wordleft");
-
-  vector<string> s = trie.MatchPrefix("Wo");
+  Graph graph;
+  graph.AddNode("Buddy");
+  graph.AddNode("Bestie");
+  graph.AddNode("Testie");
+  graph.AddEdge("Buddy", "Bestie");
+  graph.AddEdge("Buddy", "Testie");
+  graph.PrintNodes();
+  graph.PrintEdges("Buddy");
+  graph.PrintEdges("Bestie");
 
   std::cout << "Goodbye" << std::endl;
 

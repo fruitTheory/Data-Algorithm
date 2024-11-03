@@ -2,12 +2,12 @@
   "version": "0.2.0",
   "configurations":[
     {
-      "name": "cl Debug",
+      "name": "Debug",
       "type": "cppvsdbg",
       "request": "launch",
       "program": "${workspaceFolder}/debug/main.exe",
       "args": [],
-      "preLaunchTask": "C/C++: cl.exe build active file",
+      "preLaunchTask": "Build with CMake",
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],

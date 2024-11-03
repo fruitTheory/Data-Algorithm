@@ -9,3 +9,5 @@
 #include "Heap.hpp"
 #include "Hashmap.hpp"
 #include "Trie.hpp"
+#include "Dynamic/Fibonacci.hpp"
+#include "Graph.hpp"

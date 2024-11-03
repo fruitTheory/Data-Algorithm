@@ -2,12 +2,12 @@
 
 Implemented:  
 - LinkedList  
-  - Copy/Move constructor and Assignment
+  - Copy/Move constructor and assignment
   - Debugged to check if all working
 - DynamicArray  
   - Simple heap allocated array
 - Stack
-  - Basic array mostly O(1)
+  - Basic array LIFO
 - Queues
   - Queue based on linked list FIFO
 - BinarySearchTree
@@ -15,6 +15,7 @@ Implemented:
   - Deals with inorder successor
 - Heap
   - Max-heap priority
+  - Bubble-up array
 - Hashmap
   - Simple C-like
 - Trie 

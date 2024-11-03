@@ -22,12 +22,12 @@ set_target_properties(main PROPERTIES
 
 target_include_directories(
   main PRIVATE
-    src/Algorithms 
+    src/Algorithms/
     src/DataStructures
     src/Includes
 )
 
-add_compile_options(/W4)
+add_compile_options(/W4 /EHs /Zi)
 
 add_custom_target(
   run
@@ -48,8 +48,8 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
 
 time make -C build -j 8  
-time cmake --build build -- -j 8
-msbuild ./build/MyProject.sln -p:Configuration=Release -m:8
+cmake --build build
+msbuild ./build/MyProject.sln -p:Configuration=Release
 
 cmake --build build --target clean-all
 cmake --build build --target install
