@@ -4,4 +4,3 @@ debug
 .vscode/settings*
 *.pdb
 *.obj
-*Graph*

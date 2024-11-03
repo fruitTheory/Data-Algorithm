@@ -20,10 +20,11 @@ Implemented:
   - Simple C-like
 - Trie 
   - Insert, delete, prefix matching
+- Graph   
+  - Directed and Undirected
+  - Acyclic temporarily
 
 Not Implement:  
-- Graph   
---
 - BinarySearch  
 - BubbleSort  
 - Fibonacci
